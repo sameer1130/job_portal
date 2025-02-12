@@ -1,11 +1,12 @@
-"use client";
+"use client"; // Ensures this component is client-side
 
 import { applyForJob } from "@/actions/applications";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Define the props to expect a jobId from the dynamic route
 interface ApplyPageProps {
-  params: { jobId: string };
+  params: { jobId: string }; // Dynamic route param
 }
 
 export default function ApplyPage({ params }: ApplyPageProps) {
@@ -13,7 +14,7 @@ export default function ApplyPage({ params }: ApplyPageProps) {
     name: "",
     email: "",
     resume: "",
-    attachements: "",
+    attachements: "", 
   });
 
   const [loading, setLoading] = useState(false);
@@ -76,6 +77,7 @@ export default function ApplyPage({ params }: ApplyPageProps) {
             className="w-full p-2 border rounded"
           />
           <input
+            type="text"
             name="coverLetter"
             placeholder="Cover Letter"
             value={formData.attachements}

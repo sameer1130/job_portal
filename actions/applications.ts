@@ -16,12 +16,43 @@ export async function applyForJob({
   jobId: string;
 }) {
   try {
-    await prisma.applicants.create({
-      data: { name, email, resume, attachements, jobId },
+    // Check if the applicant already exists
+    let applicant = await prisma.applicants.findFirst({
+      where: { email },
     });
-    return { success: true };
+
+    // If the applicant does not exist, create a new one
+    if (!applicant) {
+      applicant = await prisma.applicants.create({
+        data: { name, email, resume, attachements },
+      });
+    }
+
+    // Check if the applicant has already applied for the job
+    const existingApplication = await prisma.jobApplication.findUnique({
+      where: {
+        jobId_applicantId: {
+          jobId,
+          applicantId: applicant.id,
+        },
+      },
+    });
+
+    if (existingApplication) {
+      return { success: false, message: "You have already applied for this job." };
+    }
+
+    // Create a new job application entry
+    await prisma.jobApplication.create({
+      data: {
+        jobId,
+        applicantId: applicant.id,
+      },
+    });
+
+    return { success: true, message: "Application submitted successfully." };
   } catch (error) {
     console.error("Error submitting application:", error);
-    return { success: false };
+    return { success: false, message: "Something went wrong. Please try again." };
   }
 }

@@ -14,25 +14,37 @@ datasource db {
 }
 
 
-model Jobs{
-  id String @id @default(uuid())
-  title String
+model Jobs {
+  id          String           @id @default(uuid())
+  title       String
   description String
-  category String
-  location String
-  company String
-  numberOfApplicant Int
-  createdAt DateTime @default(now())
-  applications Applicants[]
+  category    String
+  location    String
+  company     String
+  createdAt   DateTime         @default(now())
+
+  applications JobApplication[]
 }
 
-model Applicants{
-  id String @id @default(uuid())
-  name String
-  email String
-  resume String
-  attachements String
-  createdAt DateTime @default(now())
-  jobId String
-  job Jobs @relation(fields: [jobId], references: [id])
+model Applicants {
+  id          String           @id @default(uuid())
+  name        String
+  email       String           @unique
+  resume      String
+  attachements String?
+  createdAt   DateTime         @default(now())
+
+  applications JobApplication[]
+}
+
+model JobApplication {
+  id          String      @id @default(uuid())
+  jobId       String
+  applicantId String
+  appliedAt   DateTime    @default(now())
+
+  job         Jobs        @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  applicant   Applicants  @relation(fields: [applicantId], references: [id], onDelete: Cascade)
+
+  @@unique([jobId, applicantId]) 
 }
