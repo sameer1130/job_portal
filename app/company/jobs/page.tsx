@@ -16,11 +16,11 @@ export default function CompanyJobsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch all jobs on initial load
+
   useEffect(() => {
     const fetchAllJobs = async () => {
       try {
-        const allJobs = await getCompanyJobs(); // Fetch all jobs initially
+        const allJobs = await getCompanyJobs(); 
         setJobs(allJobs ?? []);
       } catch (err) {
         console.error("Error fetching jobs:", err);
@@ -33,7 +33,7 @@ export default function CompanyJobsPage() {
     fetchAllJobs();
   }, []);
 
-  // Fetch jobs for a specific company
+ 
   const fetchJobsByCompany = async () => {
     if (!companyId.trim()) {
       setError("Please enter a valid company ID.");
@@ -58,11 +58,11 @@ export default function CompanyJobsPage() {
     <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Company Job Listings</h1>
 
-      {/* Company Search Input */}
+      
       <div className="flex gap-4 mb-6">
         <input
           type="text"
-          placeholder="Enter company ID..."
+          placeholder="Enter Company Name..."
           value={companyId}
           onChange={(e) => setCompanyId(e.target.value)}
           className="border p-2 rounded-md w-full"
@@ -75,13 +75,13 @@ export default function CompanyJobsPage() {
         </button>
       </div>
 
-      {/* Show Loading State */}
+      
       {loading && <p className="text-center text-gray-600">Loading jobs...</p>}
 
-      {/* Show Error Message */}
+      
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      {/* No Jobs Message */}
+      
       {!loading && jobs.length === 0 && !error && (
         <div className="text-center py-20">
           <h1 className="text-2xl font-bold text-gray-700">No jobs found</h1>

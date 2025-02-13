@@ -1,20 +1,20 @@
-"use client"; // Ensures this component is client-side
-
+"use client";
 import { applyForJob } from "@/actions/applications";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation"; // Use the useParams hook for dynamic params
 
-// Define the props to expect a jobId from the dynamic route
-interface ApplyPageProps {
-  params: { jobId: string }; // Dynamic route param
-}
+export default function ApplyPage() {
+  const { jobId } = useParams(); // Use the useParams hook to get the dynamic route param
+  
+  if (!jobId) {
+    throw new Error("Job ID is required");
+  }
 
-export default function ApplyPage({ params }: ApplyPageProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     resume: "",
-    attachements: "", 
+    attachements: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function ApplyPage({ params }: ApplyPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const response = await applyForJob({ ...formData, jobId: params.jobId });
+    const response = await applyForJob({ ...formData, jobId: jobId as string  });
 
     if (response.success) {
       setSuccess(true);
@@ -76,15 +76,13 @@ export default function ApplyPage({ params }: ApplyPageProps) {
             required
             className="w-full p-2 border rounded"
           />
-          <input
-            type="text"
+          <textarea
             name="coverLetter"
             placeholder="Cover Letter"
             value={formData.attachements}
             onChange={handleChange}
-            // required
             className="w-full p-2 border rounded"
-          ></input>
+          />
 
           <button
             type="submit"

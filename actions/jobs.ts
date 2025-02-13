@@ -14,16 +14,18 @@ export async function getJobs(){
     }
 }
 
-export async function getJobsbyId(id:string){
-    try{
-        const jobId = await prisma.jobs.findUnique({
-            where:{id}
-        });
-        return jobId;
-    }catch(error){
-        console.error("Error fetching jobs with id: ", error);
-        return[];
-    }
+import { Jobs } from "@prisma/client"; 
+
+export async function getJobsbyId(id: string): Promise<Jobs | null> {
+  try {
+    const jobId = await prisma.jobs.findUnique({
+      where: { id },
+    });
+    return jobId;
+  } catch (error) {
+    console.error("Error fetching jobs with id: ", error);
+    return null;
+  }
 }
 
 export async function getCompanyJobs(company?:string){
