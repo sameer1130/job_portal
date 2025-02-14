@@ -1,17 +1,14 @@
 // /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
-import { getJobsbyId,getJobs } from "@/actions/jobs";
+import { getJobsbyId, getJobs } from "@/actions/jobs";
 
-// Define static params for pre-rendering
 export const generateStaticParams = async () => {
-  // You may fetch job IDs from a database or an API
-  const jobs = await getJobs(); // Assuming getJobs() fetches all jobs
+  const jobs = await getJobs();
   return jobs.map(({ id }: { id: string }) => ({
     id: String(id),
   }));
 };
 
-// Define the type for `params`
 export type ParamsType = Promise<{ id: string }>;
 
 export default async function JobDetails({ params }: { params: ParamsType }) {
@@ -30,28 +27,22 @@ export default async function JobDetails({ params }: { params: ParamsType }) {
   }
 
   return (
-    <section className="py-24">
-      <div className="container mx-auto">
-        <div>
-          <Link href="/candidate/jobs" className="font-semibold italic text-sky-600 underline">
-            ← Back to Job Listings
-          </Link>
-        </div>
-        <div className="mt-10 max-w-4xl bg-white shadow-lg rounded-lg p-6">
-          <h1 className="text-xl font-semibold">Job Title</h1>
-          <h2 className="text-3xl font-bold text-gray-900">{job.title}</h2>
-          <h2 className="text-xl font-semibold">Company</h2>
-          <p className="text-lg text-gray-600 mt-2">{job.company}</p>
-          <h2 className="text-xl font-semibold">Location & Category</h2>
-          <p className="mt-1 text-gray-500">{job.location} | {job.category}</p>
-
-          {/* Job Description */}
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold">Job Description</h2>
-            <p className="mt-2 text-gray-700 leading-relaxed">{job.description}</p>
+    <div className="m-5">
+      <div className="group bg-slate-100 mx-2 mt-10 grid max-w-screen-md grid-cols-12 space-x-8 overflow-hidden rounded-lg border py-8 text-gray-700 shadow transition hover:shadow-lg sm:mx-auto">
+        <div className="col-span-11 flex flex-col pr-8 text-left sm:pl-4">
+          <h3 className="text-sm text-gray-600">{job.company}</h3>
+          <h2 className="mb-3 overflow-hidden pr-7 text-lg font-semibold sm:text-xl">{job.title}</h2>
+          <p className="overflow-hidden pr-7 text-sm">{job.description}</p>
+          
+          <div className="mt-5 flex flex-col space-y-3 text-sm font-medium text-gray-500 sm:flex-row sm:items-center sm:space-y-0 sm:space-x-2">
+            <div className="">Category:
+              <span className="ml-2 mr-3 rounded-full bg-green-100 px-2 py-0.5 text-green-900">{job.category}</span>
+            </div>
+            <div className="">Location:
+              <span className="ml-2 mr-3 rounded-full bg-blue-100 px-2 py-0.5 text-blue-900">{job.location}</span>
+            </div>
           </div>
-
-          {/* Apply Button */}
+          
           <div className="mt-6">
             <Link
               href={`/candidate/apply/${job.id}`}
@@ -62,6 +53,6 @@ export default async function JobDetails({ params }: { params: ParamsType }) {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

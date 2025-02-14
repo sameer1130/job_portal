@@ -13,7 +13,7 @@ export default function EditJobPage({ params }: { params: ParamsType }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
-  const [category, setCategory] = useState(""); // Keep only category state
+  const [category, setCategory] = useState(""); 
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
 
@@ -138,7 +138,7 @@ export default function EditJobPage({ params }: { params: ParamsType }) {
             </button>
             <button
               type="button"
-              onClick={() => router.push(`/company/jobs/${job.id}`)}
+              onClick={() => router.push(`/company/jobs`)}
               className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
             >
               Cancel
